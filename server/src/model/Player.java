@@ -19,5 +19,15 @@ public class Player {
 	public void movePaddle(int x){
 		paddle.move(x);
 	}
+
+	public String getPseudo() {
+		return pseudo;
+	}
+
+	public void setPseudo(String pseudo) {
+		this.pseudo = pseudo;
+	}
+	
+	
 	
 }
