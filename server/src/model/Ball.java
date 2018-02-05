@@ -1,11 +1,14 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Ball {
 
 	private int posX, posY;
 	private MovementVector v;
 	private int speed;
 	private int radius;
+	private ArrayList<String> scorers = new ArrayList();
 	
 	public Ball(int posX, int posY, MovementVector v, int speed, int radius){
 		this.posX = posX;
@@ -24,6 +27,14 @@ public class Ball {
 		v.setMovementVector(dx, dy);
 	}
 	
+	public int getMovX() {
+		return v.getDx();
+	}
+	
+	public int getMovY() {
+		return v.getDy();
+	}
+	
 	public int getPosX(){
 		return posX;
 	}
@@ -34,6 +45,38 @@ public class Ball {
 	
 	public int getRadius(){
 		return radius;
+	}
+	
+	public int getLimitLeft() {
+		return posX - radius;
+	}
+	
+	public int getLimitTop() {
+		return posY - radius;
+	}
+	
+	public int getLimitBottom() {
+		return posY + radius;
+	}
+	
+	public int getLimitRight() {
+		return posX + radius;
+	}
+
+	public ArrayList<String> getScorers() {
+		return scorers;
+	}
+
+	public void setScorers(ArrayList<String> scorers) {
+		this.scorers = scorers;
+	}
+
+	public void addScorer(String scorer) {
+		this.scorers.add(scorer);
+	}
+	
+	public void removeScorers() {
+		this.scorers = new ArrayList<String>();
 	}
 	
 	

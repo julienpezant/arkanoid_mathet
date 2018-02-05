@@ -24,4 +24,16 @@ public class Paddle {
 	public int getPosY(){
 		return posY;
 	}
+	
+	public int getWidth() {
+		return WIDTH;
+	}
+	
+	public int getCenter() {
+		return posX + (int) Math.ceil(WIDTH / 2);
+	}
+	
+	public int getLimitRight() {
+		return posX + WIDTH;
+	}
 }
