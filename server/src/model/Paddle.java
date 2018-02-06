@@ -8,13 +8,24 @@ public class Paddle {
 	private static final int POS_Y = 95;
 	private int posX, posY;
 	
+	private MovementVector v;
+	
 	public Paddle(){
 		this.posX = World.WIDTH/2;
 		this.posY = POS_Y;
+		this.v = new MovementVector(0,0);
 	}
 	
 	public void move(int x){
 		this.posX = x;
+	}
+	
+	public void updateMovementVector(int dx){
+		v.setMovementVector(dx, 0);
+	}
+	
+	public int getMovX() {
+		return v.getDx();
 	}
 	
 	public int getPosX(){

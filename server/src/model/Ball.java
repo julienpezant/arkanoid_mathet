@@ -27,6 +27,11 @@ public class Ball {
 		v.setMovementVector(dx, dy);
 	}
 	
+	public void replace(int nx, int ny) {
+		this.posX = nx;
+		this.posY = ny;
+	}
+	
 	public int getMovX() {
 		return v.getDx();
 	}

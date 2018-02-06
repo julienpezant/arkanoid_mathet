@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class World {
 
@@ -74,8 +75,12 @@ public class World {
 				int paddleLimitLeft = paddle.getPosX();
 				int paddleLimitRight = paddle.getLimitRight();
 				int playerPrecision;
-				//tests if the ball reached the y coordinate of the top of the paddle
-				if (ball.getLimitBottom() >= paddleTop) {
+				/* 
+				 * tests if the ball reached the y coordinate of the top of the paddle
+				 * may warrant changes later on
+				 */
+				
+				if (ball.getLimitBottom() == paddleTop) {
 					//tests if the ball is actually touching the paddle
 					if(ball.getPosX() >= paddleLimitLeft && ball.getPosX() <= paddleLimitRight) {
 						
@@ -86,9 +91,12 @@ public class World {
 						 * gets the precision of the player that touched the ball, aka the distance between the center of the
 						 * player's paddle and the spot at which the ball collided with it.
 						 */
+						
+						//touched the right or the center of the paddle
 						if(ball.getPosX() >= paddleCenter) {
 							playerPrecision = ball.getPosX() - paddleCenter;
 						}else {
+						//touched the left of the paddle
 							playerPrecision =  paddleCenter - ball.getPosX();
 						}
 						player.setPrecision(playerPrecision);
@@ -108,11 +116,35 @@ public class World {
 				}
 			}
 			if(paddleRebound) {
-				ball.updateMovementVector(ball.getMovX(),ball.getMovY() * -1);
+				/*
+				 * here we use the paddles' movement vectors to alter the trajectory of the ball post rebound
+				 * there was a rebound but there may be several players with the highest precision
+				 * for now, a random one is picked among the scorers 
+				 */
+				ArrayList<String> scorers = ball.getScorers();
+				String pseudo = scorers.get(new Random().nextInt(scorers.size()));
+				for (Player player : playersList) {
+					if(pseudo.equals(player.getPseudo())) {
+						Paddle paddle = player.getPaddle();
+						int paddleMovX = paddle.getMovX();
+						ball.updateMovementVector(ball.getMovX() + paddleMovX, ball.getMovY() * -1);
+						break;
+					}
+				}
 			}
 			
 			if(ball.getLimitBottom() >= HEIGHT) {
-				//la balle sort?
+				//the ball reached the bottom and is put back in front of a random paddle
+				Player player = playersList.get(new Random().nextInt(playersList.size()));
+				Paddle paddle = player.getPaddle();
+				int paddleMovX = paddle.getMovX();
+				int newPosX = paddle.getCenter();
+				int newPosY = paddle.getPosY() + ball.getRadius() + 1;
+				ball.replace(newPosX,  newPosY);
+				
+				//the ball is sent back using the chosen paddle's current movement vector and a random y value
+				ball.updateMovementVector(paddleMovX, new Random().nextInt(HEIGHT) * -1);
+				
 			}
 		}
 	}
