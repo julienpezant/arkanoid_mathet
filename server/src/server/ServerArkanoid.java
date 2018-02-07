@@ -30,7 +30,8 @@ public class ServerArkanoid {
 				socket = this.serverSocket.accept();
 				System.out.println("Client accepted!");
 				
-				clientsList.add(new OneClientManager(socket, this));
+				OneClientManager newClient = new OneClientManager(socket, this);
+				clientsList.add(newClient);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

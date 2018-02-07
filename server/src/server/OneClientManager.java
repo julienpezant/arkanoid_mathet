@@ -21,7 +21,9 @@ public class OneClientManager implements Runnable {
 	private Player player;
 
 	private static final String PSEUDO = "PSEUDO";
+	private static final String NEW_CLIENT = "NEW_CLIENT";
 	private static final String PLAYERS_LIST = "PLAYERS_LIST";
+	private static final String NEW_POSITION_PADDLE = "NPP";
 	private static final String DISCONNECTION = "DISCONNECTION";
 
 	public OneClientManager(Socket socket, ServerArkanoid server) {
@@ -38,7 +40,7 @@ public class OneClientManager implements Runnable {
 	}
 
 	@Override
-	public void run() {
+	public synchronized void run() {
 		while(true){
 			String request;
 			
@@ -57,11 +59,32 @@ public class OneClientManager implements Runnable {
 					out.println(server.getClientsList().size());
 					for(OneClientManager client : server.getClientsList()){
 						out.println(client.player.getPseudo());
+						out.println(client.player.getPaddle().getPosX());
 					}
 					out.flush();
 					System.out.println("Players list sent to "+pseudo+".");
 				}
-
+				if(request.equals(NEW_CLIENT)){
+					for(OneClientManager client : server.getClientsList()){
+						if(!client.player.getPseudo().equals(player.getPseudo())){
+							client.out.println(NEW_CLIENT);
+							client.out.println(player.getPseudo());
+							client.out.println(player.getPaddle().getPosX());
+							client.out.flush();
+						}
+						
+					}
+				}
+				if(request.equals(NEW_POSITION_PADDLE)){
+					int posX = Integer.parseInt(in.readLine());
+					player.getPaddle().move(posX);
+					for(OneClientManager client : server.getClientsList()){
+						client.out.println(NEW_POSITION_PADDLE);
+						client.out.println(player.getPseudo());
+						client.out.println(posX);
+						client.out.flush();
+					}
+				}
 				if(request.equals(DISCONNECTION)){
 					socket.close();
 					server.getClientsList().remove(this);
