@@ -14,6 +14,8 @@ public class ClientArkanoid implements Runnable {
     private PrintWriter out;
     
     private String pseudo;
+    
+    private ArkanoidGUI arkanoidGui;
 
     // Server config
     private static final String SERVER = "localhost";
@@ -32,6 +34,8 @@ public class ClientArkanoid implements Runnable {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream());
 
+            arkanoidGui = new ArkanoidGUI();
+            
             new Thread(this).start();
             
         } catch (UnknownHostException e) {
