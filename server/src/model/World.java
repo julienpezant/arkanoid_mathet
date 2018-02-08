@@ -19,6 +19,9 @@ public class World {
 	}
 	
 	public void startGame(){
+		while(true) {
+			
+		}
 		
 	}
 	
