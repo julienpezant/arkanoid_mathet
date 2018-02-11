@@ -12,21 +12,31 @@ public class World {
 	private ArrayList<Ball> ballsList = new ArrayList<Ball>();
 	private ArrayList<Player> playersList = new ArrayList<Player>();
 	
-	public World(ArrayList<Brick> bricksList, ArrayList<Ball> ballsList){
-		this.bricksList = bricksList;
-		this.ballsList = ballsList;
-		this.playersList = new ArrayList<Player>();
+	public World(/*ArrayList<Brick> bricksList, ArrayList<Ball> ballsList*/){
+		/*this.bricksList = bricksList;
+		this.ballsList = ballsList;*/
 	}
 	
 	public void startGame(){
 		while(true) {
-			
+			moveBalls();
+			handleCollisions();
 		}
-		
 	}
 	
 	public void addPlayer(Player player){
 		playersList.add(player);
+	}
+	
+	public void addBall() {
+		
+		this.ballsList.add(new Ball());
+	}
+	
+	public void moveBalls() {
+		for(Ball ball : ballsList) {
+			ball.move();
+		}
 	}
 	
 	/**
@@ -35,10 +45,9 @@ public class World {
 	 * Increments scores
 	 * Detects who is the most precise when returning the ball
 	 * 
-	 * Doesn't handle balls that exit the world by the bottom yet.
 	 * Doesn't handle rebounds between balls (or bricks)
 	 */
-	public void detectCollisions() {
+	public void handleCollisions() {
 		for(Ball ball : ballsList) {
 			
 			//tests if there's a rebound on the left side
@@ -129,8 +138,12 @@ public class World {
 				for (Player player : playersList) {
 					if(pseudo.equals(player.getPseudo())) {
 						Paddle paddle = player.getPaddle();
-						int paddleMovX = paddle.getMovX();
-						ball.updateMovementVector(ball.getMovX() + paddleMovX, ball.getMovY() * -1);
+						/*int paddleMovX = paddle.getMovX();
+						ball.updateMovementVector(ball.getMovX() + paddleMovX, ball.getMovY() * -1);*/
+						double alpha = (ball.getPosX() - paddle.getCenter()) / (paddle.getWidth()/2) * Math.PI * 0.5;
+						int dx = (int) Math.floor(Math.cos(alpha) * ball.getSpeed());
+						int dy = (int) Math.floor(Math.cos(alpha) * ball.getSpeed());
+						ball.updateMovementVector(dx, dy * -1);
 						break;
 					}
 				}
@@ -140,13 +153,11 @@ public class World {
 				//the ball reached the bottom and is put back in front of a random paddle
 				Player player = playersList.get(new Random().nextInt(playersList.size()));
 				Paddle paddle = player.getPaddle();
-				int paddleMovX = paddle.getMovX();
 				int newPosX = paddle.getCenter();
-				int newPosY = paddle.getPosY() + ball.getRadius() + 1;
+				int newPosY = paddle.getPosY() - ball.getRadius() - 1;
 				ball.replace(newPosX,  newPosY);
-				
-				//the ball is sent back using the chosen paddle's current movement vector and a random y value
-				ball.updateMovementVector(paddleMovX, new Random().nextInt(HEIGHT) * -1);
+				//the ball is sent back in a straight line
+				ball.updateMovementVector(0, -1);
 				
 			}
 		}
