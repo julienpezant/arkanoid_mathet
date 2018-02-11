@@ -29,8 +29,7 @@ public class World {
 	}
 	
 	public void addBall() {
-		
-		this.ballsList.add(new Ball());
+		// this.ballsList.add(new Ball());
 	}
 	
 	public void moveBalls() {
