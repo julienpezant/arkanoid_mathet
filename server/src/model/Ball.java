@@ -8,6 +8,7 @@ public class Ball {
 	private MovementVector v;
 	private int speed;
 	private int radius;
+	private double alpha;
 	private ArrayList<String> scorers = new ArrayList();
 	
 	public Ball(int posX, int posY, MovementVector v, int speed, int radius){
@@ -16,11 +17,12 @@ public class Ball {
 		this.v = v;
 		this.speed = speed;
 		this.radius = radius;
+		this.alpha = 0;
 	}
 	
 	public void move(){
-		posX = (posX + v.getDx()) * speed;
-		posY = (posY + v.getDy()) * speed;
+		posX = (posX + v.getDx());
+		posY = (posY + v.getDy());
 	}
 	
 	public void updateMovementVector(int dx, int dy){
@@ -82,6 +84,14 @@ public class Ball {
 	
 	public void removeScorers() {
 		this.scorers = new ArrayList<String>();
+	}
+	
+	public int getSpeed() {
+		return this.speed;
+	}
+	
+	public void setSpeed(int speed) {
+		this.speed = speed;
 	}
 	
 	
