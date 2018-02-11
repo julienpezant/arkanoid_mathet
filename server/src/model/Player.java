@@ -1,24 +1,22 @@
 package model;
 
-import java.awt.Color;
-
 public class Player {
 
 	private String pseudo;
-	private Color color;
+	private String color;
 	private int score;
 	private Paddle paddle;
 	
 	private int precision;
 	
-	public Player(String pseudo, Color color){
+	public Player(String pseudo, String color){
 		this.pseudo = pseudo;
 		this.color = color;
 		this.score = 0;
 		this.paddle = new Paddle();
 		this.precision = -1;
 	}
-	
+
 	public void movePaddle(int x){
 		paddle.move(x);
 	}
@@ -26,9 +24,9 @@ public class Player {
 	public String getPseudo() {
 		return pseudo;
 	}
-
-	public void setPseudo(String pseudo) {
-		this.pseudo = pseudo;
+	
+	public String getColor() {
+		return color;
 	}
 	
 	public Paddle getPaddle() {
@@ -45,10 +43,6 @@ public class Player {
 
 	public int getScore() {
 		return score;
-	}
-
-	public void setScore(int score) {
-		this.score = score;
 	}
 	
 	public void incrementScore() {

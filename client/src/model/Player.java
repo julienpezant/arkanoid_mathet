@@ -1,41 +1,35 @@
 package model;
 
-import java.awt.Color;
-import java.util.HashMap;
+import client.ClientArkanoid;
 
 public class Player {
 
 	private String pseudo;
-	private Color color;
+	private String color;
 	private int score;
 	private Paddle paddle;
-	private HashMap<String,Paddle> players;
 	
-	public Player(String pseudo, Color color, Paddle paddle){
+	public Player(String pseudo, String color, int posX){
 		this.pseudo = pseudo;
 		this.color = color;
 		this.score = 0;
-		this.paddle = paddle;
+		this.paddle = new Paddle(40, posX, ClientArkanoid.HEIGHT - (ClientArkanoid.HEIGHT/2));
 	}
 
 	public String getPseudo() {
 		return pseudo;
 	}
-
-	public void setPseudo(String pseudo) {
-		this.pseudo = pseudo;
-	}
 	
+	public String getColor() {
+		return color;
+	}
+
 	public Paddle getPaddle() {
 		return paddle;
 	}
 
 	public int getScore() {
 		return score;
-	}
-
-	public void setScore(int score) {
-		this.score = score;
 	}
 	
 }

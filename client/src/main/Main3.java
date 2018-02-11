@@ -6,6 +6,6 @@ import client.ClientArkanoid;
 
 public class Main3 {
 	public static void main(String[] args) {
-		ClientArkanoid arkanoid = new ClientArkanoid("Julien", Color.RED);
+		ClientArkanoid arkanoid = new ClientArkanoid("Julien", "Red");
     }
 }
