@@ -40,7 +40,7 @@ public class OneClientManager implements Runnable {
 	}
 
 	@Override
-	public synchronized void run() {
+	public void run() {
 		while(true){
 			String request;
 			
@@ -71,8 +71,7 @@ public class OneClientManager implements Runnable {
 							client.out.println(player.getPseudo());
 							client.out.println(player.getPaddle().getPosX());
 							client.out.flush();
-						}
-						
+						}	
 					}
 				}
 				if(request.equals(NEW_POSITION_PADDLE)){

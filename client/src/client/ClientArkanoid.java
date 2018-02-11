@@ -97,8 +97,10 @@ public class ClientArkanoid extends JFrame implements Runnable {
                         	arkanoidView.addNewClientPaddle(pseudo, posX);
                         }
                     }
+                    System.out.println("coucou");
                     out.println(NEW_CLIENT);
                     out.println(pseudo);
+                    out.flush();
             	}
                 if(message.equals(NEW_POSITION_PADDLE)){
                 	String pseudo = in.readLine();
