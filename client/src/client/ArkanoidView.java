@@ -17,14 +17,17 @@ import java.util.HashMap;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+import model.Ball;
 import model.Player;
 
 public class ArkanoidView extends JPanel implements MouseMotionListener{
 
 	private ClientArkanoid client;
-	private int width, height;
-	//private HashMap<String, Rectangle> paddles;
 	private ArrayList<Player> playersList;
+	private Ball ball;
+	
+	private int width, height;
+	
 	private final static HashMap<String, Color> colorsList = new HashMap<String, Color>() {{
 	    put("Black", Color.BLACK);
 	    put("Yellow", Color.YELLOW);
@@ -37,6 +40,7 @@ public class ArkanoidView extends JPanel implements MouseMotionListener{
 		this.height = height;
 		
 		playersList = new ArrayList<Player>();
+		ball = new Ball(width/2, height/2, 10);
 		
 		// Transparent 16 x 16 pixel cursor image.
 		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
@@ -47,7 +51,7 @@ public class ArkanoidView extends JPanel implements MouseMotionListener{
 		
 		setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		setPreferredSize(new Dimension(width, height));
-		setBackground(new Color(255, 255, 255));
+		setBackground(new Color(0, 100, 255));
 		
 		addMouseMotionListener(this);
 	}
@@ -81,11 +85,15 @@ public class ArkanoidView extends JPanel implements MouseMotionListener{
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		for(Player player : playersList){
-			g.setColor(colorsList.get("Black"));			
+			g.setColor(Color.BLACK);			
 			g.drawRect(player.getPaddle().getX(), player.getPaddle().getY(), player.getPaddle().getWidth(), 10);
 			g.setColor(colorsList.get(player.getColor()));				
 			g.fillRect(player.getPaddle().getX(), player.getPaddle().getY(), player.getPaddle().getWidth(), 10);
 		}
+		g.setColor(Color.BLACK);	
+		g.drawOval(ball.getPosX(), ball.getPosY(), ball.getSide(), ball.getSide());
+		g.setColor(Color.DARK_GRAY);				
+		g.fillOval(ball.getPosX(), ball.getPosY(), ball.getSide(), ball.getSide());
 	}
 
 	@Override

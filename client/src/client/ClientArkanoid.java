@@ -15,14 +15,16 @@ import javax.swing.JFrame;
 
 public class ClientArkanoid extends JFrame implements Runnable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
     
     private String pseudo;
     private String color;
-    
-    //private Player player;
     
     private ArkanoidView arkanoidView;
 	private boolean clientOnline = false;
