@@ -57,11 +57,14 @@ public class ArkanoidView extends JPanel implements MouseMotionListener{
 	}
 	
 
+	// New client has connected to the game
+	// One more player and one more paddle to display
 	public void addNewClientPaddle(String pseudo, String color, int posX) {
 		playersList.add(new Player(pseudo, color, posX));
 		repaint();
 	}
 	
+	// Client is now disconnected. We remove it from the game
 	public void removeClientPaddle(String pseudo) {
 		for(Player player : playersList){
 			if(player.getPseudo().equals(pseudo)){
@@ -72,6 +75,7 @@ public class ArkanoidView extends JPanel implements MouseMotionListener{
 		repaint();
 	}
 	
+	// We update one paddle location, for one client referenced by his pseudo
 	public void setPaddleLocation(String pseudo, int posX){
 		for(Player player : playersList){
 			if(player.getPseudo().equals(pseudo)){
@@ -82,14 +86,19 @@ public class ArkanoidView extends JPanel implements MouseMotionListener{
 		repaint();
 	}
 
+	// JPanel is repaint there
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
+		
+		// All paddles are displayed
 		for(Player player : playersList){
 			g.setColor(Color.BLACK);			
 			g.drawRect(player.getPaddle().getX(), player.getPaddle().getY(), player.getPaddle().getWidth(), 10);
 			g.setColor(colorsList.get(player.getColor()));				
 			g.fillRect(player.getPaddle().getX(), player.getPaddle().getY(), player.getPaddle().getWidth(), 10);
 		}
+		
+		// The ball is displayed
 		g.setColor(Color.BLACK);	
 		g.drawOval(ball.getPosX(), ball.getPosY(), ball.getSide(), ball.getSide());
 		g.setColor(Color.DARK_GRAY);				
@@ -99,6 +108,7 @@ public class ArkanoidView extends JPanel implements MouseMotionListener{
 	@Override
 	public void mouseDragged(MouseEvent e) {}
 
+	// Client has moved his paddle with his mouse
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		client.movePlayerPaddle(e.getX());

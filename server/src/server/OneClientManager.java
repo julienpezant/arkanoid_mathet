@@ -74,9 +74,11 @@ public class OneClientManager implements Runnable {
 		}		
 	}
 
+	// Manager is notified that the managed client wants to disconnect
 	private void handleDisconnectionRequest() throws IOException {
 		System.out.println(player.getPseudo() + " has disconnected.");
 		
+		// Informs to all other client which one is about to leave the game
 		for(OneClientManager client : server.getClientsList()){
 			if(!client.player.getPseudo().equals(player.getPseudo())){
 				client.out.println(CLIENT_DISCONNECTED);
@@ -85,13 +87,19 @@ public class OneClientManager implements Runnable {
 			}
 		}
 		
+		// Server delete the client and we close the socket dedicated to him
 		server.getClientsList().remove(this);
 		socket.close();
 	}
 
+	// Manager is notified that his client has modified the position of his paddle
 	private void handleNewPositionPaddleRequest() throws NumberFormatException, IOException {
 		int posX = Integer.parseInt(in.readLine());
+		
+		// We move his paddle in the model
 		player.getPaddle().move(posX);
+		
+		// All clients now received the notification to update the position of this specific paddle
 		for(OneClientManager client : server.getClientsList()){
 			client.out.println(NEW_POSITION_PADDLE);
 			client.out.println(player.getPseudo());
@@ -100,7 +108,9 @@ public class OneClientManager implements Runnable {
 		}
 	}
 
+	// Manager is notified its client wants to play with others
 	private void handleNewClientRequest() {
+		// For each client, they now know that someone has join the game
 		for(OneClientManager client : server.getClientsList()){
 			if(!client.player.getPseudo().equals(player.getPseudo())){
 				client.out.println(NEW_CLIENT);
@@ -112,6 +122,7 @@ public class OneClientManager implements Runnable {
 		}
 	}
 
+	// Manager is now receiving the pseudo and color of its client
 	private void handlePseudoRequest() throws IOException {
 		String pseudo = in.readLine();
 		String color = in.readLine();
@@ -119,6 +130,7 @@ public class OneClientManager implements Runnable {
 		
 		System.out.println("Client's name is "+pseudo+".");
 		
+		// Its client will now receive the players list (pseudo, color and paddle)
 		System.out.println("Fetching players list...");
 		out.println(PLAYERS_LIST);
 		out.println(server.getClientsList().size());

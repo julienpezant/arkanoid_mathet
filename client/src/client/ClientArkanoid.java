@@ -14,20 +14,21 @@ import java.net.UnknownHostException;
 import javax.swing.JFrame;
 
 public class ClientArkanoid extends JFrame implements Runnable {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
     
     private String pseudo;
     private String color;
+	private boolean clientOnline = false;
     
     private ArkanoidView arkanoidView;
-	private boolean clientOnline = false;
     
     public static final int WIDTH = 400;
     public static final int HEIGHT = 200;
@@ -52,18 +53,21 @@ public class ClientArkanoid extends JFrame implements Runnable {
 		this.color = color;
 		//this.player = new Player(pseudo, color, 0);
 		
-		// On récupère notre Container du JFrame
+		// JFrame container
 		Container c = this.getContentPane();
 		setLayout(new BorderLayout());
 		
+		// JPanel to contain the game
 		arkanoidView = new ArkanoidView(this, WIDTH, HEIGHT);
 		c.add(arkanoidView, BorderLayout.CENTER);
 		
-		// On redimensionne les composants du JFrame, lui donne une taille et l'affiche
+		// JFrame now displayable
 		pack();
 		setSize(WIDTH, HEIGHT);
 		setVisible(true);
 		
+		// WindowListener on the default close operation
+		// Broadcast to the server the disconnection message
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 	    addWindowListener(new WindowAdapter() {
 	        @Override
@@ -79,12 +83,13 @@ public class ClientArkanoid extends JFrame implements Runnable {
 	    });
 		
 		try {
+		    // The socket is initialized, with its BufferedReader and PrintWriter
             socket = new Socket(SERVER, PORT);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream());
             
+    	    // Thread is started and ready to receive and broadcast messages
             new Thread(this).start();
-            
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -92,21 +97,26 @@ public class ClientArkanoid extends JFrame implements Runnable {
         }
 	}
 
+	// Thread started
 	@Override
 	public void run() {
+		// Client is now online
 		clientOnline = true;
 		
+		// Client broadcast his pseudo and color to the server
         out.println(PSEUDO);
         out.println(pseudo);
         out.println(color);
         out.flush();
         
+        // Client is now able to receive message from the server
         while(clientOnline){
             String message;
             try {
                 message = in.readLine();
                 //System.out.println("Message retrieved : "+message+".");
                 
+                // We route the received message to handle it correctly
                 switch (message) {
 	                case PLAYERS_LIST:
 	                	handlePlayersListMessage();
@@ -130,27 +140,38 @@ public class ClientArkanoid extends JFrame implements Runnable {
         }
 	}
 
+	// Client wants to update the position of his paddle
+	// We broadcast a message to the server, the position is updated in the model
 	public void movePlayerPaddle(int posX){
 		broadcastNewPositionPaddleRequest(posX);
 	}
 	
-	// HANDLERS
+	/**
+	 * HANDLERS
+	 */
 	
+	// Server send the new position of the paddle referenced by the pseudo
 	private void handleNewPositionPaddleMessage() throws IOException {
 		String pseudo = in.readLine();
 		int posX = Integer.parseInt(in.readLine());
+		
+		// ArkanoidView officialy updates the position
     	arkanoidView.setPaddleLocation(pseudo, posX);
 	}
 
+	// Server send the players list to the newly connected client
 	private void handlePlayersListMessage() throws NumberFormatException, IOException {
 		int length = Integer.parseInt(in.readLine());
 		
+		// For each player
 		for(int i = 0 ; i < length; i++)
 			handleNewClientMessage();
 		
+		// Now the client has all data, other client will see the new client
 		broadcastNewClientRequest();
 	}
 	
+	// Server send data about the newly connected client, or other players already connected
 	private void handleNewClientMessage() throws IOException{
 		String pseudo = in.readLine();
 		String color = in.readLine();
@@ -158,24 +179,32 @@ public class ClientArkanoid extends JFrame implements Runnable {
     	arkanoidView.addNewClientPaddle(pseudo, color, posX);
 	}
 	
+	// Server notifies other clients that someone has disconnected
 	private void handleClientDisconnectedMessage() throws IOException {
 		String pseudo = in.readLine();
 		arkanoidView.removeClientPaddle(pseudo);
 	}
 
-	// BROADCASTS
+	/**
+	 * BROADCASTS
+	 */
 	
+	// Client broadcast that he's about to be in-game
+	// Server will inform all other clients that the new client is about to play
 	private void broadcastNewClientRequest(){
 		out.println(NEW_CLIENT);
         out.flush();
 	}
 	
+	// Client has updated his paddle position
+	// Server will be notify
 	private void broadcastNewPositionPaddleRequest(int posX){
 		out.println(NEW_POSITION_PADDLE);
 		out.println(posX);
 		out.flush();
 	}
 
+	// Client wants to disconnect
 	protected void broadcastDisconnectionMessage() throws IOException {
 		out.println(DISCONNECTION);
 		out.flush();
