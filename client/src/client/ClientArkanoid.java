@@ -42,6 +42,7 @@ public class ClientArkanoid extends JFrame implements Runnable {
     private static final String NEW_CLIENT = "NEW_CLIENT";
 	private static final String PLAYERS_LIST = "PLAYERS_LIST";
 	private static final String NEW_POSITION_PADDLE = "NPP";
+	private static final String NEW_POSITION_BALL = "NPB";
 	private static final String DISCONNECTION = "DISCONNECTION";
 	private static final String CLIENT_DISCONNECTED = "CLIENT_DISCONNECTED";
 	
@@ -127,6 +128,9 @@ public class ClientArkanoid extends JFrame implements Runnable {
 	                case NEW_POSITION_PADDLE:
 	                	handleNewPositionPaddleMessage();
 	                	break;
+	                case NEW_POSITION_BALL:
+	                	handleNewPositionBallMessage();
+	                	break;
 	                case CLIENT_DISCONNECTED:
 	                	handleClientDisconnectedMessage();
 	                	break;
@@ -158,6 +162,15 @@ public class ClientArkanoid extends JFrame implements Runnable {
 		// ArkanoidView officialy updates the position
     	arkanoidView.setPaddleLocation(pseudo, posX);
 	}
+	
+	// Server send the new position of the paddle referenced by the pseudo
+		private void handleNewPositionBallMessage() throws IOException {
+			int posX = Integer.parseInt(in.readLine());
+			int posY = Integer.parseInt(in.readLine());
+			
+			// ArkanoidView officialy updates the position
+	    	arkanoidView.setBallLocation(posX, posY);
+		}
 
 	// Server send the players list to the newly connected client
 	private void handlePlayersListMessage() throws NumberFormatException, IOException {

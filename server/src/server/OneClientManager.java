@@ -24,6 +24,7 @@ public class OneClientManager implements Runnable {
 	private static final String NEW_CLIENT = "NEW_CLIENT";
 	private static final String PLAYERS_LIST = "PLAYERS_LIST";
 	private static final String NEW_POSITION_PADDLE = "NPP";
+	private static final String NEW_POSITION_BALL = "NPB";
 	private static final String DISCONNECTION = "DISCONNECTION";
 	private static final String CLIENT_DISCONNECTED = "CLIENT_DISCONNECTED";
 
@@ -103,9 +104,10 @@ public class OneClientManager implements Runnable {
 		for(OneClientManager client : server.getClientsList()){
 			client.out.println(NEW_POSITION_PADDLE);
 			client.out.println(player.getPseudo());
-			client.out.println(posX);
+			client.out.println(player.getPaddle().getPosX());
 			client.out.flush();
 		}
+		broadcastNewBallPositionMessage(posX, posX);
 	}
 
 	// Manager is notified its client wants to play with others
@@ -141,6 +143,13 @@ public class OneClientManager implements Runnable {
 		}
 		out.flush();
 		System.out.println("Players list sent to "+pseudo+".");
+	}
+	
+	public void broadcastNewBallPositionMessage(int posX, int posY){
+		out.println(NEW_POSITION_BALL);
+		out.println(posX);
+		out.println(posY);
+		out.flush();
 	}
 
 }
