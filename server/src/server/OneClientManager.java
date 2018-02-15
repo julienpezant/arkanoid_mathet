@@ -169,7 +169,7 @@ public class OneClientManager implements Runnable {
 	 * BROADCASTS
 	 */
 
-	public void broadcastNewBallPositionMessage(int posX, int posY){
+	public void broadcastNewBallPositionMessage(long posX, long posY){
 		synchronized(server) {
 			out.println(NEW_POSITION_BALL);
 			out.println(posX);
@@ -178,7 +178,7 @@ public class OneClientManager implements Runnable {
 		}
 	}
 
-	public void broadcastPlayerScoreMessage(String pseudo, int score) {
+	public void broadcastNewPlayerScoreMessage(String pseudo, int score) {
 		synchronized(server) {
 			out.println(NEW_PLAYER_SCORE);
 			out.println(pseudo);

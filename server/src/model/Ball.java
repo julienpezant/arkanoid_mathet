@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Ball {
 
-	private int posX, posY;
+	private double posX, posY;
 	private MovementVector v;
 	private int speed;
 	private int radius;
@@ -29,7 +29,7 @@ public class Ball {
 		posY = (posY + v.getDy());
 	}
 	
-	public void updateMovementVector(int dx, int dy){
+	public void updateMovementVector(double dx, double dy){
 		v.setMovementVector(dx, dy);
 	}
 	
@@ -38,39 +38,47 @@ public class Ball {
 		this.posY = ny;
 	}
 	
-	public int getMovX() {
+	public double getMovX() {
 		return v.getDx();
 	}
 	
-	public int getMovY() {
+	public double getMovY() {
 		return v.getDy();
 	}
 	
-	public int getPosX(){
+	public double getPosX(){
 		return posX;
 	}
 	
-	public int getPosY(){
+	public double getPosY(){
 		return posY;
+	}
+	
+	public long getXPixel() {
+		return Math.round(posX);
+	}
+	
+	public long getYPixel() {
+		return Math.round(posY);
 	}
 	
 	public int getRadius(){
 		return radius;
 	}
 	
-	public int getLimitLeft() {
+	public double getLimitLeft() {
 		return posX - radius;
 	}
 	
-	public int getLimitTop() {
+	public double getLimitTop() {
 		return posY - radius;
 	}
 	
-	public int getLimitBottom() {
+	public double getLimitBottom() {
 		return posY + radius;
 	}
 	
-	public int getLimitRight() {
+	public double getLimitRight() {
 		return posX + radius;
 	}
 

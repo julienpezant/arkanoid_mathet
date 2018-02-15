@@ -65,6 +65,14 @@ public class ServerArkanoid {
 		}
 	}
 	
+	public ArrayList<OneClientManager> getClientsList(){
+		return clientsList;
+	}
+	
+	public World getWorld(){
+		return world;
+	}
+	
 	public void addClient(OneClientManager client){
 		clientsList.add(client);
 	}
@@ -81,22 +89,14 @@ public class ServerArkanoid {
 		Ball ball = world.getBallsList().get(0);
 		
 		for(OneClientManager client : clientsList){
-			client.broadcastNewBallPositionMessage(ball.getPosX(), ball.getPosY());
+			client.broadcastNewBallPositionMessage(ball.getXPixel(), ball.getYPixel());
 		}
 	}
 	
 	public void broadcastNewPlayerScoreMessage(Player player){
 		for(OneClientManager client : clientsList){
-			client.broadcastPlayerScoreMessage(player.getPseudo(), player.getScore());
+			client.broadcastNewPlayerScoreMessage(player.getPseudo(), player.getScore());
 		}
-	}
-	
-	public ArrayList<OneClientManager> getClientsList(){
-		return clientsList;
-	}
-	
-	public World getWorld(){
-		return world;
 	}
 	
 	public static void main(String[] args) {
