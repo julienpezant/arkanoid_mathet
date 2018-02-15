@@ -3,19 +3,26 @@ package model;
 import java.util.ArrayList;
 import java.util.Random;
 
-import dnr.utils.modeleecoutable.AbstractModeleEcoutable;
+import server.ServerArkanoid;
 
-public class World extends AbstractModeleEcoutable implements Runnable {
+public class World implements Runnable {
 
 	public static final int WIDTH = 400;
 	public static final int HEIGHT = 600;
+	
+	private ServerArkanoid server;
 	
 	private ArrayList<Brick> bricksList = new ArrayList<Brick>();
 	private ArrayList<Ball> ballsList = new ArrayList<Ball>();
 	private ArrayList<Player> playersList = new ArrayList<Player>();
 	
-	public World() throws InterruptedException{
+	private boolean isRunning;
+	
+	public World(ServerArkanoid server){
+		this.server = server;
+		
 		addBall(new Ball());
+		isRunning = true;
 	}
 	
 	public void startGame() throws InterruptedException{
@@ -24,10 +31,10 @@ public class World extends AbstractModeleEcoutable implements Runnable {
 
 	@Override
 	public void run() {
-		while(true) {
+		while(isRunning) {
 			moveBalls();
 			handleCollisions();
-			fireChangement();
+			server.broadcastNewBallPositionMessage();
 			
 			try {
 				Thread.sleep(5);
@@ -37,8 +44,16 @@ public class World extends AbstractModeleEcoutable implements Runnable {
 		}
 	}
 	
+	public void setRunning(boolean isRunning) {
+		this.isRunning = isRunning;
+	}
+
 	public void addPlayer(Player player){
 		playersList.add(player);
+	}
+	
+	public void removePlayer(Player player){
+		playersList.remove(player);
 	}
 	
 	public void addBall(Ball ball) {
@@ -78,6 +93,7 @@ public class World extends AbstractModeleEcoutable implements Runnable {
 					for(String pseudo : ball.getScorers()) {
 						if(pseudo.equals(player.getPseudo())) {
 							player.incrementScore();
+							server.broadcastNewPlayerScoreMessage(player);
 						}
 					}
 					

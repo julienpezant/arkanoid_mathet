@@ -43,8 +43,10 @@ public class ClientArkanoid extends JFrame implements Runnable {
 	private static final String PLAYERS_LIST = "PLAYERS_LIST";
 	private static final String NEW_POSITION_PADDLE = "NPP";
 	private static final String NEW_POSITION_BALL = "NPB";
+	private static final String NEW_PLAYER_SCORE = "NEW_PLAYER_SCORE";
 	private static final String DISCONNECTION = "DISCONNECTION";
 	private static final String CLIENT_DISCONNECTED = "CLIENT_DISCONNECTED";
+	
 	
 	public ClientArkanoid(String pseudo, String color) {
 		// Notre fenêtre principale
@@ -131,6 +133,9 @@ public class ClientArkanoid extends JFrame implements Runnable {
 	                case NEW_POSITION_BALL:
 	                	handleNewPositionBallMessage();
 	                	break;
+	                case NEW_PLAYER_SCORE:
+	                	handleNewPlayerScoreMessage();
+	                	break;
 	                case CLIENT_DISCONNECTED:
 	                	handleClientDisconnectedMessage();
 	                	break;
@@ -194,6 +199,11 @@ public class ClientArkanoid extends JFrame implements Runnable {
 		String color = in.readLine();
     	int posX = Integer.parseInt(in.readLine());
     	arkanoidView.addNewClientPaddle(pseudo, color, posX);
+	}
+	
+	// Server send the new score for one player
+	private void handleNewPlayerScoreMessage() {
+		
 	}
 	
 	// Server notifies other clients that someone has disconnected

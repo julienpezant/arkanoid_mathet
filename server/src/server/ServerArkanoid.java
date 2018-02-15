@@ -5,6 +5,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import model.Ball;
+import model.Player;
 import model.World;
 
 public class ServerArkanoid {
@@ -15,12 +17,12 @@ public class ServerArkanoid {
 	private World world;
 	
 	private ArrayList<OneClientManager> clientsList;
-	
-	private boolean hasOneClient = false;
+	private boolean hasOneClient;
 	
 	public ServerArkanoid(int port){
 		this.port = port;
 		this.clientsList = new ArrayList<OneClientManager>();
+		this.hasOneClient = false;
 	}
 	
 	public void startServer() throws InterruptedException{
@@ -35,13 +37,12 @@ public class ServerArkanoid {
 				System.out.println("Client accepted!");	
 				
 				if(clientsList.size() == 0){
-					this.world = new World();
+					world = new World(this);
 					hasOneClient = true;
 				}
 				
 				OneClientManager newClient = new OneClientManager(socket, this);
-				this.world.ajoutEcouteur(newClient);
-				clientsList.add(newClient);
+				addClient(newClient);
 				
 				if(hasOneClient){
 					this.world.startGame();
@@ -61,6 +62,32 @@ public class ServerArkanoid {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	public void addClient(OneClientManager client){
+		clientsList.add(client);
+	}
+	
+	public void removeClient(OneClientManager client){
+		clientsList.remove(client);
+		
+		if(clientsList.size() == 0){
+			world.setRunning(false);
+		}
+	}
+	
+	public void broadcastNewBallPositionMessage() {
+		Ball ball = world.getBallsList().get(0);
+		
+		for(OneClientManager client : clientsList){
+			client.broadcastNewBallPositionMessage(ball.getPosX(), ball.getPosY());
+		}
+	}
+	
+	public void broadcastNewPlayerScoreMessage(Player player){
+		for(OneClientManager client : clientsList){
+			client.broadcastPlayerScoreMessage(player.getPseudo(), player.getScore());
 		}
 	}
 	

@@ -47,6 +47,7 @@ public class Player {
 	
 	public void incrementScore() {
 		this.score++;
+		System.out.println(pseudo+" : "+score);
 	}
 	
 }
