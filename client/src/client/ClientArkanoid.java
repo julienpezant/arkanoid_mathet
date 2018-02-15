@@ -30,8 +30,8 @@ public class ClientArkanoid extends JFrame implements Runnable {
     
     private ArkanoidView arkanoidView;
     
-    public static final int WIDTH = 400;
-    public static final int HEIGHT = 200;
+    public static final int WIDTH = 410;
+    public static final int HEIGHT = 600;
 
     // Server config
     private static final String SERVER = "localhost";

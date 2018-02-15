@@ -7,8 +7,8 @@ import dnr.utils.modeleecoutable.AbstractModeleEcoutable;
 
 public class World extends AbstractModeleEcoutable implements Runnable {
 
-	public static final int WIDTH = 200;
-	public static final int HEIGHT = 100;
+	public static final int WIDTH = 400;
+	public static final int HEIGHT = 600;
 	
 	private ArrayList<Brick> bricksList = new ArrayList<Brick>();
 	private ArrayList<Ball> ballsList = new ArrayList<Ball>();
@@ -30,7 +30,7 @@ public class World extends AbstractModeleEcoutable implements Runnable {
 			fireChangement();
 			
 			try {
-				Thread.sleep(100);
+				Thread.sleep(5);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
