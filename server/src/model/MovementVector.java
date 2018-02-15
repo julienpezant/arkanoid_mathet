@@ -2,22 +2,22 @@ package model;
 
 public class MovementVector {
 
-	private int dx, dy;
+	private double dx, dy;
 	
-	public MovementVector(int dx, int dy){
+	public MovementVector(double dx, double dy){
 		this.dx = dx;
 		this.dy = dy;
 	}
 	
-	public int getDx(){
+	public double getDx(){
 		return this.dx;
 	}
 	
-	public int getDy(){
+	public double getDy(){
 		return this.dy;
 	}
 	
-	public void setMovementVector(int dx, int dy){
+	public void setMovementVector(double dx, double dy){
 		this.dx = dx;
 		this.dy = dy;
 	}

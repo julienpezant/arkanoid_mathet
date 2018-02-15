@@ -157,7 +157,7 @@ public class OneClientManager implements Runnable, EcouteurModele {
 		System.out.println("Players list sent to "+pseudo+".");
 	}
 	
-	public void broadcastNewBallPositionMessage(int posX, int posY){
+	public void broadcastNewBallPositionMessage(long posX, long posY){
 		synchronized(server) {
 			out.println(NEW_POSITION_BALL);
 			out.println(posX);
@@ -171,7 +171,7 @@ public class OneClientManager implements Runnable, EcouteurModele {
 	public void modeleMAJ(Object source) {
 		ArrayList<Ball> ballsList = server.getWorld().getBallsList();
 		for(Ball b : ballsList){
-			broadcastNewBallPositionMessage(b.getPosX(), b.getPosY());
+			broadcastNewBallPositionMessage(b.getXPixel(), b.getYPixel());
 		}
 	}
 

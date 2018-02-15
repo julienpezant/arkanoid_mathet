@@ -7,7 +7,7 @@ public class Player {
 	private int score;
 	private Paddle paddle;
 	
-	private int precision;
+	private double precision;
 	
 	public Player(String pseudo, String color){
 		this.pseudo = pseudo;
@@ -33,11 +33,11 @@ public class Player {
 		return paddle;
 	}
 	
-	public int getPrecision() {
+	public double getPrecision() {
 		return precision;
 	}
 	
-	public void setPrecision(int precision) {
+	public void setPrecision(double precision) {
 		this.precision = precision;
 	}
 

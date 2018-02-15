@@ -24,7 +24,7 @@ public class Paddle {
 		v.setMovementVector(dx, 0);
 	}
 	
-	public int getMovX() {
+	public double getMovX() {
 		return v.getDx();
 	}
 	

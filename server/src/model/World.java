@@ -89,7 +89,7 @@ public class World extends AbstractModeleEcoutable implements Runnable {
 			
 			//tests if there's a rebound on paddles and adds scorers accordingly
 			boolean paddleRebound = false;
-			int bestPrecision = -1;
+			double bestPrecision = -1;
 			
 			for(Player player : playersList) {
 				//for each player's paddle
@@ -98,13 +98,13 @@ public class World extends AbstractModeleEcoutable implements Runnable {
 				int paddleCenter = paddle.getCenter();
 				int paddleLimitLeft = paddle.getPosX();
 				int paddleLimitRight = paddle.getLimitRight();
-				int playerPrecision;
+				double playerPrecision;
 				/* 
 				 * tests if the ball reached the y coordinate of the top of the paddle
 				 * may warrant changes later on
 				 */
 				
-				if (ball.getLimitBottom() == paddleTop) {
+				if (Math.round(ball.getLimitBottom()) == Math.round(paddleTop) || Math.round(ball.getLimitBottom()) == Math.round(paddleTop) + 1) {
 					//tests if the ball is actually touching the paddle
 					if(ball.getPosX() >= paddleLimitLeft && ball.getPosX() <= paddleLimitRight) {
 						
@@ -150,12 +150,12 @@ public class World extends AbstractModeleEcoutable implements Runnable {
 				for (Player player : playersList) {
 					if(pseudo.equals(player.getPseudo())) {
 						Paddle paddle = player.getPaddle();
-						/*int paddleMovX = paddle.getMovX();
-						ball.updateMovementVector(ball.getMovX() + paddleMovX, ball.getMovY() * -1);*/
+						
 						double alpha = (ball.getPosX() - paddle.getCenter()) / (paddle.getWidth()/2) * Math.PI * 0.5;
-						int dx = (int) Math.floor(Math.cos(alpha) * ball.getSpeed());
-						int dy = (int) Math.floor(Math.cos(alpha) * ball.getSpeed());
-						ball.updateMovementVector(dx, dy * -1);
+						double dx = Math.sin(alpha) * ball.getSpeed();
+						double dy = Math.cos(alpha) * ball.getSpeed();
+						
+						ball.updateMovementVector(dx, dy*-1);
 						break;
 					}
 				}
@@ -169,7 +169,7 @@ public class World extends AbstractModeleEcoutable implements Runnable {
 				int newPosY = paddle.getPosY() - ball.getRadius() - 1;
 				ball.replace(newPosX,  newPosY);
 				//the ball is sent back in a straight line
-				ball.updateMovementVector(0, -1);
+				ball.updateMovementVector(0, -2);
 				
 			}
 		}
