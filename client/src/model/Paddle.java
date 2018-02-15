@@ -14,10 +14,6 @@ public class Paddle{
 		return width;
 	}
 
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
 	public int getX() {
 		return x;
 	}
@@ -26,8 +22,7 @@ public class Paddle{
 		return y;
 	}
 	
-	public void setLocation(int x, int y){
+	public void setLocation(int x){
 		this.x = x;
-		this.y = y;
 	}
 }

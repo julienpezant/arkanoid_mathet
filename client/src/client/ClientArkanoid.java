@@ -13,13 +13,11 @@ import java.net.UnknownHostException;
 
 import javax.swing.JFrame;
 
+import model.Player;
+import model.World;
+
 public class ClientArkanoid extends JFrame implements Runnable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
 	private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
@@ -28,15 +26,13 @@ public class ClientArkanoid extends JFrame implements Runnable {
     private String color;
 	private boolean clientOnline = false;
     
+	private World world;
+	
     private ArkanoidView arkanoidView;
-    
-    public static final int WIDTH = 410;
-    public static final int HEIGHT = 600;
 
     // Server config
     private static final String SERVER = "localhost";
     private static final int PORT = 5555;
-
     // Protocol
     private static final String PSEUDO = "PSEUDO";
     private static final String NEW_CLIENT = "NEW_CLIENT";
@@ -54,19 +50,20 @@ public class ClientArkanoid extends JFrame implements Runnable {
 		
 		this.pseudo = pseudo;
 		this.color = color;
-		//this.player = new Player(pseudo, color, 0);
+		
+		this.world = new World();
 		
 		// JFrame container
 		Container c = this.getContentPane();
 		setLayout(new BorderLayout());
 		
 		// JPanel to contain the game
-		arkanoidView = new ArkanoidView(this, WIDTH, HEIGHT);
+		arkanoidView = new ArkanoidView(this, World.WIDTH, World.HEIGHT);
 		c.add(arkanoidView, BorderLayout.CENTER);
 		
 		// JFrame now displayable
 		pack();
-		setSize(WIDTH, HEIGHT);
+		setSize(World.WIDTH, World.HEIGHT);
 		setVisible(true);
 		
 		// WindowListener on the default close operation
@@ -164,10 +161,8 @@ public class ClientArkanoid extends JFrame implements Runnable {
 		String pseudo = in.readLine();
 		int posX = Integer.parseInt(in.readLine());
 		
-		//System.out.println("[pseudo:"+pseudo+" ; x:"+posX+"]");
-		
-		// ArkanoidView officialy updates the position
-    	arkanoidView.setPaddleLocation(pseudo, posX);
+		// World officialy updates the position
+		world.setLocationPlayerPaddle(pseudo, posX);
 	}
 	
 	// Server send the new position of the paddle referenced by the pseudo
@@ -177,8 +172,8 @@ public class ClientArkanoid extends JFrame implements Runnable {
 		
 		//System.out.println("[x:"+posX+" ; y:"+posY+"]");
 		
-		// ArkanoidView officialy updates the position
-    	arkanoidView.setBallLocation(posX, posY);
+		// World officialy updates the position
+		world.setLocationBall(posX, posY);
 	}
 
 	// Server send the players list to the newly connected client
@@ -198,7 +193,8 @@ public class ClientArkanoid extends JFrame implements Runnable {
 		String pseudo = in.readLine();
 		String color = in.readLine();
     	int posX = Integer.parseInt(in.readLine());
-    	arkanoidView.addNewClientPaddle(pseudo, color, posX);
+    	
+    	world.addPlayer(new Player(pseudo, color, posX));
 	}
 	
 	// Server send the new score for one player
@@ -209,7 +205,8 @@ public class ClientArkanoid extends JFrame implements Runnable {
 	// Server notifies other clients that someone has disconnected
 	private void handleClientDisconnectedMessage() throws IOException {
 		String pseudo = in.readLine();
-		arkanoidView.removeClientPaddle(pseudo);
+		
+		world.removePlayer(world.getPlayersList().get(pseudo));
 	}
 
 	/**
@@ -237,5 +234,9 @@ public class ClientArkanoid extends JFrame implements Runnable {
 		out.flush();
 		clientOnline = false;
 		socket.close();
+	}
+	
+	public World getWorld(){
+		return world;
 	}
 }

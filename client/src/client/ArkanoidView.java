@@ -18,17 +18,13 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+import dnr.utils.modeleecoutable.EcouteurModele;
 import model.Ball;
 import model.Player;
 
-public class ArkanoidView extends JPanel implements MouseMotionListener{
+public class ArkanoidView extends JPanel implements MouseMotionListener, EcouteurModele{
 
 	private ClientArkanoid client;
-	//private ArrayList<Player> playersList;
-	private HashMap<String, Player> playersList;
-	private Ball ball;
-	
-	private int width, height;
 	
 	private final static HashMap<String, Color> colorsList = new HashMap<String, Color>() {{
 	    put("Black", Color.BLACK);
@@ -38,11 +34,8 @@ public class ArkanoidView extends JPanel implements MouseMotionListener{
 	
 	public ArkanoidView(ClientArkanoid client, int width, int height){
 		this.client = client;
-		this.width = width;
-		this.height = height;
 		
-		playersList = new HashMap<String, Player>();
-		ball = new Ball(width/2, height/2, 10);
+		client.getWorld().ajoutEcouteur(this);
 		
 		// Transparent 16 x 16 pixel cursor image.
 		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
@@ -57,38 +50,12 @@ public class ArkanoidView extends JPanel implements MouseMotionListener{
 		
 		addMouseMotionListener(this);
 	}
-	
-
-	// New client has connected to the game
-	// One more player and one more paddle to display
-	public void addNewClientPaddle(String pseudo, String color, int posX) {
-		playersList.put(pseudo, new Player(pseudo, color, posX));
-		repaint();
-	}
-	
-	// Client is now disconnected. We remove it from the game
-	public void removeClientPaddle(String pseudo) {
-		playersList.remove(pseudo);
-		repaint();
-	}
-	
-	// We update one paddle location, for one client referenced by his pseudo
-	public void setPaddleLocation(String pseudo, int posX){
-		Player player = playersList.get(pseudo);
-		player.getPaddle().setLocation(posX, player.getPaddle().getY());
-		repaint();
-	}
-	
-	public void setBallLocation(int posX, int posY){
-		ball.replace(posX-ball.getSide()/2, posY-ball.getSide()/2);
-		repaint();
-	}
 
 	// JPanel is repaint there
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 
-		for(Map.Entry<String, Player> player : playersList.entrySet()){
+		for(Map.Entry<String, Player> player : client.getWorld().getPlayersList().entrySet()){
 			g.setColor(Color.BLACK);			
 			g.drawRect(player.getValue().getPaddle().getX(), player.getValue().getPaddle().getY(), player.getValue().getPaddle().getWidth(), 10);
 			g.setColor(colorsList.get(player.getValue().getColor()));				
@@ -96,18 +63,24 @@ public class ArkanoidView extends JPanel implements MouseMotionListener{
 		}
 		
 		// The ball is displayed
+		Ball ball = client.getWorld().getBallsList().get(0);
 		g.setColor(Color.BLACK);	
 		g.drawOval(ball.getPosX(), ball.getPosY(), ball.getSide(), ball.getSide());
 		g.setColor(Color.DARK_GRAY);				
 		g.fillOval(ball.getPosX(), ball.getPosY(), ball.getSide(), ball.getSide());
 	}
-
-	@Override
-	public void mouseDragged(MouseEvent e) {}
-
 	// Client has moved his paddle with his mouse
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		client.movePlayerPaddle(e.getX());
+	}
+	
+	@Override
+	public void mouseDragged(MouseEvent e) {}
+
+
+	@Override
+	public void modeleMAJ(Object source) {
+		repaint();
 	}
 }

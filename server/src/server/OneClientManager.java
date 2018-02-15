@@ -162,6 +162,7 @@ public class OneClientManager implements Runnable {
 		// Server delete the client and we close the socket dedicated to him
 		server.getWorld().removePlayer(player);
 		server.removeClient(this);
+		//TODO dans le while, mettre le param a false pour terminer le thread
 		socket.close();
 	}
 	
