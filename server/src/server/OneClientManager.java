@@ -5,10 +5,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
+import dnr.utils.modeleecoutable.EcouteurModele;
+import model.Ball;
 import model.Player;
 
-public class OneClientManager implements Runnable {
+public class OneClientManager implements Runnable, EcouteurModele {
 	
 	private Socket socket;
 	private ServerArkanoid server;
@@ -50,7 +53,7 @@ public class OneClientManager implements Runnable {
 			
 			try {
 				request = in.readLine();
-				//System.out.println("Client's request : "+request);
+				System.out.println("Client's request : "+request);
 				
 				switch (request) {
 	                case PSEUDO:
@@ -82,9 +85,11 @@ public class OneClientManager implements Runnable {
 		// Informs to all other client which one is about to leave the game
 		for(OneClientManager client : server.getClientsList()){
 			if(!client.player.getPseudo().equals(player.getPseudo())){
-				client.out.println(CLIENT_DISCONNECTED);
-				client.out.println(player.getPseudo());
-				client.out.flush();
+				synchronized(server) {
+					client.out.println(CLIENT_DISCONNECTED);
+					client.out.println(player.getPseudo());
+					client.out.flush();
+				}
 			}
 		}
 		
@@ -102,12 +107,13 @@ public class OneClientManager implements Runnable {
 		
 		// All clients now received the notification to update the position of this specific paddle
 		for(OneClientManager client : server.getClientsList()){
-			client.out.println(NEW_POSITION_PADDLE);
-			client.out.println(player.getPseudo());
-			client.out.println(player.getPaddle().getPosX());
-			client.out.flush();
+			synchronized(server) {
+				client.out.println(NEW_POSITION_PADDLE);
+				client.out.println(player.getPseudo());
+				client.out.println(player.getPaddle().getPosX());
+				client.out.flush();
+			}
 		}
-		broadcastNewBallPositionMessage(posX, posX);
 	}
 
 	// Manager is notified its client wants to play with others
@@ -115,11 +121,13 @@ public class OneClientManager implements Runnable {
 		// For each client, they now know that someone has join the game
 		for(OneClientManager client : server.getClientsList()){
 			if(!client.player.getPseudo().equals(player.getPseudo())){
-				client.out.println(NEW_CLIENT);
-				client.out.println(player.getPseudo());
-				client.out.println(player.getColor());
-				client.out.println(player.getPaddle().getPosX());
-				client.out.flush();
+				synchronized(server) {
+					client.out.println(NEW_CLIENT);
+					client.out.println(player.getPseudo());
+					client.out.println(player.getColor());
+					client.out.println(player.getPaddle().getPosX());
+					client.out.flush();
+				}
 			}	
 		}
 	}
@@ -129,27 +137,42 @@ public class OneClientManager implements Runnable {
 		String pseudo = in.readLine();
 		String color = in.readLine();
 		player = new Player(pseudo, color);
+		server.getWorld().addPlayer(player);
 		
 		System.out.println("Client's name is "+pseudo+".");
 		
 		// Its client will now receive the players list (pseudo, color and paddle)
 		System.out.println("Fetching players list...");
-		out.println(PLAYERS_LIST);
-		out.println(server.getClientsList().size());
-		for(OneClientManager client : server.getClientsList()){
-			out.println(client.player.getPseudo());
-			out.println(client.player.getColor());
-			out.println(client.player.getPaddle().getPosX());
+		
+		synchronized(server) {
+			out.println(PLAYERS_LIST);
+			out.println(server.getClientsList().size());
+			for(OneClientManager client : server.getClientsList()){
+				out.println(client.player.getPseudo());
+				out.println(client.player.getColor());
+				out.println(client.player.getPaddle().getPosX());
+			}
+			out.flush();
 		}
-		out.flush();
 		System.out.println("Players list sent to "+pseudo+".");
 	}
 	
 	public void broadcastNewBallPositionMessage(int posX, int posY){
-		out.println(NEW_POSITION_BALL);
-		out.println(posX);
-		out.println(posY);
-		out.flush();
+		synchronized(server) {
+			out.println(NEW_POSITION_BALL);
+			out.println(posX);
+			out.println(posY);
+			out.flush();
+		}
+		
+	}
+
+	@Override
+	public void modeleMAJ(Object source) {
+		ArrayList<Ball> ballsList = server.getWorld().getBallsList();
+		for(Ball b : ballsList){
+			broadcastNewBallPositionMessage(b.getPosX(), b.getPosY());
+		}
 	}
 
 }

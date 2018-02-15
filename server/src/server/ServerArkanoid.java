@@ -16,25 +16,38 @@ public class ServerArkanoid {
 	
 	private ArrayList<OneClientManager> clientsList;
 	
+	private boolean hasOneClient = false;
+	
 	public ServerArkanoid(int port){
 		this.port = port;
 		this.clientsList = new ArrayList<OneClientManager>();
 	}
 	
-	public void startServer(){
+	public void startServer() throws InterruptedException{
 		try {
 			serverSocket = new ServerSocket(this.port);
 			
 			System.out.println("Server launched.");
 			
-			this.world = new World();
-			
 			while(true){
 				System.out.println("Server awaiting for client...");
 				socket = this.serverSocket.accept();
-				System.out.println("Client accepted!");				
+				System.out.println("Client accepted!");	
+				
+				if(clientsList.size() == 0){
+					this.world = new World();
+					hasOneClient = true;
+				}
+				
 				OneClientManager newClient = new OneClientManager(socket, this);
+				this.world.ajoutEcouteur(newClient);
 				clientsList.add(newClient);
+				
+				if(hasOneClient){
+					this.world.startGame();
+					hasOneClient = false;
+				}
+				
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -55,8 +68,16 @@ public class ServerArkanoid {
 		return clientsList;
 	}
 	
-	public static void main(String[] args){
+	public World getWorld(){
+		return world;
+	}
+	
+	public static void main(String[] args) {
 		ServerArkanoid serveur = new ServerArkanoid(5555);
-		serveur.startServer();
+		try {
+			serveur.startServer();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

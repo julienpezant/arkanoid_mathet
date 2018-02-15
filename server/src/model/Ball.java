@@ -11,6 +11,10 @@ public class Ball {
 	private double alpha;
 	private ArrayList<String> scorers = new ArrayList();
 	
+	public Ball(){
+		this(100,90, new MovementVector(0,-1),1,5);
+	}
+	
 	public Ball(int posX, int posY, MovementVector v, int speed, int radius){
 		this.posX = posX;
 		this.posY = posY;

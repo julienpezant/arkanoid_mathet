@@ -95,6 +95,7 @@ public class ArkanoidView extends JPanel implements MouseMotionListener{
 	
 	public void setBallLocation(int posX, int posY){
 		ball.replace(posX, posY);
+		repaint();
 	}
 
 	// JPanel is repaint there

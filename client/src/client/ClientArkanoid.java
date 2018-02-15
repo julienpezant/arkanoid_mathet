@@ -159,18 +159,22 @@ public class ClientArkanoid extends JFrame implements Runnable {
 		String pseudo = in.readLine();
 		int posX = Integer.parseInt(in.readLine());
 		
+		//System.out.println("[pseudo:"+pseudo+" ; x:"+posX+"]");
+		
 		// ArkanoidView officialy updates the position
     	arkanoidView.setPaddleLocation(pseudo, posX);
 	}
 	
 	// Server send the new position of the paddle referenced by the pseudo
-		private void handleNewPositionBallMessage() throws IOException {
-			int posX = Integer.parseInt(in.readLine());
-			int posY = Integer.parseInt(in.readLine());
-			
-			// ArkanoidView officialy updates the position
-	    	arkanoidView.setBallLocation(posX, posY);
-		}
+	private void handleNewPositionBallMessage() throws IOException {
+		int posX = Integer.parseInt(in.readLine());
+		int posY = Integer.parseInt(in.readLine());
+		
+		//System.out.println("[x:"+posX+" ; y:"+posY+"]");
+		
+		// ArkanoidView officialy updates the position
+    	arkanoidView.setBallLocation(posX, posY);
+	}
 
 	// Server send the players list to the newly connected client
 	private void handlePlayersListMessage() throws NumberFormatException, IOException {

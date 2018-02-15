@@ -3,7 +3,9 @@ package model;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class World {
+import dnr.utils.modeleecoutable.AbstractModeleEcoutable;
+
+public class World extends AbstractModeleEcoutable implements Runnable {
 
 	public static final int WIDTH = 200;
 	public static final int HEIGHT = 100;
@@ -12,15 +14,26 @@ public class World {
 	private ArrayList<Ball> ballsList = new ArrayList<Ball>();
 	private ArrayList<Player> playersList = new ArrayList<Player>();
 	
-	public World(/*ArrayList<Brick> bricksList, ArrayList<Ball> ballsList*/){
-		/*this.bricksList = bricksList;
-		this.ballsList = ballsList;*/
+	public World() throws InterruptedException{
+		addBall(new Ball());
 	}
 	
-	public void startGame(){
+	public void startGame() throws InterruptedException{
+		new Thread(this).start();
+	}
+
+	@Override
+	public void run() {
 		while(true) {
 			moveBalls();
 			handleCollisions();
+			fireChangement();
+			
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -28,8 +41,8 @@ public class World {
 		playersList.add(player);
 	}
 	
-	public void addBall() {
-		// this.ballsList.add(new Ball());
+	public void addBall(Ball ball) {
+		ballsList.add(ball);
 	}
 	
 	public void moveBalls() {
@@ -160,5 +173,9 @@ public class World {
 				
 			}
 		}
+	}
+
+	public ArrayList<Ball> getBallsList() {
+		return ballsList;
 	}
 }
