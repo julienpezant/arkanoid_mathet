@@ -9,10 +9,10 @@ public class Player {
 	private int score;
 	private Paddle paddle;
 	
-	public Player(String pseudo, String color, int posX){
+	public Player(String pseudo, String color, int score, int posX){
 		this.pseudo = pseudo;
 		this.color = color;
-		this.score = 0;
+		this.score = score;
 		this.paddle = new Paddle(40, posX, World.HEIGHT - 100);
 	}
 
@@ -30,6 +30,10 @@ public class Player {
 
 	public int getScore() {
 		return score;
+	}
+	
+	public void setScore(int score) {
+		this.score = score;
 	}
 	
 }

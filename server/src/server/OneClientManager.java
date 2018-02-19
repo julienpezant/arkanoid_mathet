@@ -101,6 +101,7 @@ public class OneClientManager implements Runnable {
 			for(OneClientManager client : server.getClientsList()){
 				out.println(client.player.getPseudo());
 				out.println(client.player.getColor());
+				out.println(client.player.getScore());
 				out.println(client.player.getPaddle().getPosX());
 			}
 			out.flush();
@@ -118,6 +119,7 @@ public class OneClientManager implements Runnable {
 					client.out.println(NEW_CLIENT);
 					client.out.println(player.getPseudo());
 					client.out.println(player.getColor());
+					client.out.println(player.getScore());
 					client.out.println(player.getPaddle().getPosX());
 					client.out.flush();
 				}	

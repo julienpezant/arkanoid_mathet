@@ -2,6 +2,7 @@ package client;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
@@ -12,6 +13,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import javax.swing.JFrame;
+import javax.swing.JTable;
 
 import model.Player;
 import model.World;
@@ -29,6 +31,7 @@ public class ClientArkanoid extends JFrame implements Runnable {
 	private World world;
 	
     private ArkanoidView arkanoidView;
+    private ScoreView scoreView;
 
     // Server config
     private static final String SERVER = "localhost";
@@ -61,9 +64,12 @@ public class ClientArkanoid extends JFrame implements Runnable {
 		arkanoidView = new ArkanoidView(this, World.WIDTH, World.HEIGHT);
 		c.add(arkanoidView, BorderLayout.CENTER);
 		
+		scoreView = new ScoreView(world);
+		c.add(scoreView, BorderLayout.EAST);
+		
 		// JFrame now displayable
 		pack();
-		setSize(World.WIDTH, World.HEIGHT);
+		//setSize(World.WIDTH, World.HEIGHT);
 		setVisible(true);
 		
 		// WindowListener on the default close operation
@@ -192,14 +198,20 @@ public class ClientArkanoid extends JFrame implements Runnable {
 	private void handleNewClientMessage() throws IOException{
 		String pseudo = in.readLine();
 		String color = in.readLine();
+		int score = Integer.parseInt(in.readLine());
     	int posX = Integer.parseInt(in.readLine());
     	
-    	world.addPlayer(new Player(pseudo, color, posX));
+    	world.addPlayer(new Player(pseudo, color, score, posX));
 	}
 	
 	// Server send the new score for one player
-	private void handleNewPlayerScoreMessage() {
-		
+	private void handleNewPlayerScoreMessage() throws IOException {
+		String pseudo = in.readLine();
+    	int score = Integer.parseInt(in.readLine());
+    	
+    	world.getPlayersList().get(pseudo).setScore(score);
+    	
+    	System.out.println("coucou");
 	}
 	
 	// Server notifies other clients that someone has disconnected

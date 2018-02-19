@@ -34,8 +34,7 @@ public class ArkanoidView extends JPanel implements MouseMotionListener, Ecouteu
 	
 	public ArkanoidView(ClientArkanoid client, int width, int height){
 		this.client = client;
-		
-		client.getWorld().ajoutEcouteur(this);
+		this.client.getWorld().ajoutEcouteur(this);
 		
 		// Transparent 16 x 16 pixel cursor image.
 		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);

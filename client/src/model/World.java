@@ -1,13 +1,13 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import dnr.utils.modeleecoutable.AbstractModeleEcoutable;
 
 public class World extends AbstractModeleEcoutable{
 	private ArrayList<Ball> ballsList;
-	private HashMap<String, Player> playersList;
+	private LinkedHashMap<String, Player> playersList;
 	
 	public final static int WIDTH = 410;
 	public final static int HEIGHT = 600;
@@ -15,14 +15,14 @@ public class World extends AbstractModeleEcoutable{
 	public World(){
 		ballsList = new ArrayList<Ball>();
 		ballsList.add(new Ball(WIDTH/2, HEIGHT/2, 10));
-		playersList = new HashMap<String, Player>();
+		playersList = new LinkedHashMap<String, Player>();
 	}
 	
 	public ArrayList<Ball> getBallsList() {
 		return ballsList;
 	}
 
-	public HashMap<String, Player> getPlayersList() {
+	public LinkedHashMap<String, Player> getPlayersList() {
 		return playersList;
 	}
 
