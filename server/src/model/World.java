@@ -87,7 +87,6 @@ public class World implements Runnable {
 			}
 			//tests if there's a rebound on the top, people may be scoring points
 			if(ball.getLimitTop() <= 0) {
-				
 				//for each player, if their name is in the ball's scorers list, increments their score
 				for(Player player : playersList) {
 					for(String pseudo : ball.getScorers()) {
@@ -145,11 +144,11 @@ public class World implements Runnable {
 						 * also removes the former scorers from the list if their precision is lower
 						 * if his precision is at least as good, adds him to the list
 						 */
-						if(bestPrecision == -1 || bestPrecision >= playerPrecision) {
+						if(bestPrecision == -1 || bestPrecision >= playerPrecision) {	
 							if(bestPrecision > playerPrecision) {
 								ball.removeScorers();
-								bestPrecision = playerPrecision;
 							}
+							bestPrecision = playerPrecision;
 							ball.addScorer(player.getPseudo());
 						}
 					}
@@ -185,7 +184,7 @@ public class World implements Runnable {
 				int newPosY = paddle.getPosY() - ball.getRadius() - 1;
 				ball.replace(newPosX,  newPosY);
 				//the ball is sent back in a straight line
-				ball.updateMovementVector(0, -2);
+				ball.updateMovementVector(0, -1);
 				
 			}
 		}
