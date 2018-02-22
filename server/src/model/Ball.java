@@ -12,7 +12,7 @@ public class Ball {
 	private ArrayList<String> scorers = new ArrayList();
 	
 	public Ball(){
-		this(100,90, new MovementVector(0,-1),1,10);
+		this(100,90, new MovementVector(0,-1),1,26);
 	}
 	
 	public Ball(int posX, int posY, MovementVector v, int speed, int radius){

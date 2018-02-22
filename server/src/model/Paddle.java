@@ -2,10 +2,10 @@ package model;
 
 public class Paddle {
 	
-	public static final int HEIGHT = 2;
-	public static final int WIDTH = 40;
+	public static final int HEIGHT = 31;
+	public static final int WIDTH = 172;
 	
-	private static final int POS_Y = 500;
+	private static final int POS_Y = 620;
 	private int posX, posY;
 	
 	private MovementVector v;

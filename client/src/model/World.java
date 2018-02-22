@@ -9,8 +9,8 @@ public class World extends AbstractModeleEcoutable{
 	private ArrayList<Ball> ballsList;
 	private LinkedHashMap<String, Player> playersList;
 	
-	public final static int WIDTH = 410;
-	public final static int HEIGHT = 600;
+	public final static int WIDTH = 1280;
+	public final static int HEIGHT = 720;
 	
 	public World(){
 		ballsList = new ArrayList<Ball>();

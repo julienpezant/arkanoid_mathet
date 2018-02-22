@@ -1,6 +1,7 @@
 package client;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -16,7 +17,11 @@ public class ScoreView extends JPanel{
 		myTable = new JTable(new ScoreToTableModel(world));
 		myTable.setAutoCreateRowSorter(true);
 		setLayout(new BorderLayout());
-		add(new JScrollPane(myTable), BorderLayout.CENTER);
+		Dimension d = myTable.getPreferredSize();
+		JScrollPane scrollPane = new JScrollPane(myTable);
+		System.out.println(myTable.getRowHeight()*myTable.getRowCount()+1);
+		scrollPane.setPreferredSize(new Dimension(d.width, 100));
+		add((scrollPane), BorderLayout.NORTH);
 	}
 	
 	public JTable getMyTable(){

@@ -61,11 +61,11 @@ public class ClientArkanoid extends JFrame implements Runnable {
 		setLayout(new BorderLayout());
 		
 		// JPanel to contain the game
-		arkanoidView = new ArkanoidView(this, World.WIDTH, World.HEIGHT);
-		c.add(arkanoidView, BorderLayout.CENTER);
+		arkanoidView = new ArkanoidView(this, World.WIDTH, World.HEIGHT, this.color);
+		c.add(arkanoidView, BorderLayout.NORTH);
 		
 		scoreView = new ScoreView(world);
-		c.add(scoreView, BorderLayout.EAST);
+		c.add(scoreView, BorderLayout.CENTER);
 		
 		// JFrame now displayable
 		pack();

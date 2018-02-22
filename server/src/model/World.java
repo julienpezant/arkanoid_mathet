@@ -7,8 +7,8 @@ import server.ServerArkanoid;
 
 public class World implements Runnable {
 
-	public static final int WIDTH = 400;
-	public static final int HEIGHT = 600;
+	public static final int WIDTH = 1280;
+	public static final int HEIGHT = 720;
 	
 	private ServerArkanoid server;
 	
