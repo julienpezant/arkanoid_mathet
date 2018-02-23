@@ -210,14 +210,11 @@ public class ClientArkanoid extends JFrame implements Runnable {
     	int score = Integer.parseInt(in.readLine());
     	
     	world.getPlayersList().get(pseudo).setScore(score);
-    	
-    	System.out.println("coucou");
 	}
 	
 	// Server notifies other clients that someone has disconnected
 	private void handleClientDisconnectedMessage() throws IOException {
 		String pseudo = in.readLine();
-		
 		world.removePlayer(world.getPlayersList().get(pseudo));
 	}
 

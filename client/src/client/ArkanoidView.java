@@ -30,7 +30,7 @@ public class ArkanoidView extends JPanel implements MouseMotionListener, Ecouteu
 	private ClientArkanoid client;
 	private BufferedImage background;
 	private BufferedImage ballTexture;
-	String cwd = System.getProperty("user.dir");
+	private String cwd = System.getProperty("user.dir");
 	private HashMap<String, BufferedImage> paddleColors = new HashMap<String, BufferedImage>();
 	
 	
@@ -68,6 +68,7 @@ public class ArkanoidView extends JPanel implements MouseMotionListener, Ecouteu
 		g.drawImage(background, 0, 0, this);
 		
 		for(Map.Entry<String, Player> player : client.getWorld().getPlayersList().entrySet()){
+			System.out.println(player.getValue().getPseudo());
 			String color = player.getValue().getColor();
 			BufferedImage paddle = (BufferedImage)(getPaddleColors().get(color));
 			g.drawImage(paddle, player.getValue().getPaddle().getX(), player.getValue().getPaddle().getY(), this);

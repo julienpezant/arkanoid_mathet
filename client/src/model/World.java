@@ -37,7 +37,7 @@ public class World extends AbstractModeleEcoutable{
 	}
 	
 	public void removePlayer(Player player){
-		playersList.remove(player);
+		playersList.remove(player.getPseudo(), player);
 		fireChangement();
 	}
 
