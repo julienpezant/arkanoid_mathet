@@ -9,10 +9,15 @@ import model.World;
 
 public class ScoreToTableModel extends AbstractTableModel implements EcouteurModele{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6914435573147217893L;
+	
 	private final static int COLOR = 0;
 	private final static int PSEUDO = 1;
 	private final static int SCORE = 2;
-	private final static String[] columnNames = {"Color", "Pseudo", "Score"};
+	private final static String[] columnNames = {"Couleur", "Pseudonyme", "Score"};
 	
 	private World world;
 	
@@ -23,7 +28,12 @@ public class ScoreToTableModel extends AbstractTableModel implements EcouteurMod
 	
 	@Override
 	public int getColumnCount() {
-		return 3;
+		return columnNames.length;
+	}
+	
+	@Override
+	public String getColumnName(int index) {
+	    return columnNames[index];
 	}
 
 	@Override

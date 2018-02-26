@@ -12,7 +12,7 @@ public class World implements Runnable {
 	
 	private ServerArkanoid server;
 	
-	private ArrayList<Brick> bricksList = new ArrayList<Brick>();
+	//private ArrayList<Brick> bricksList = new ArrayList<Brick>();
 	private ArrayList<Ball> ballsList = new ArrayList<Ball>();
 	private ArrayList<Player> playersList = new ArrayList<Player>();
 	
@@ -37,7 +37,7 @@ public class World implements Runnable {
 			server.broadcastNewBallPositionMessage();
 			
 			try {
-				Thread.sleep(5);
+				Thread.sleep(4);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

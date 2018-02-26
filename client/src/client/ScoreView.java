@@ -11,6 +11,11 @@ import model.World;
 
 public class ScoreView extends JPanel{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2612633884493878142L;
+	
 	private JTable myTable;
 
 	public ScoreView(World world){

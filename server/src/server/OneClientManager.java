@@ -3,13 +3,9 @@ package server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
 
-import dnr.utils.modeleecoutable.EcouteurModele;
-import model.Ball;
 import model.Player;
 
 public class OneClientManager implements Runnable {
@@ -86,14 +82,14 @@ public class OneClientManager implements Runnable {
 		String pseudo = in.readLine();
 		String color = in.readLine();
 		
-		System.out.println("Client's name is "+pseudo+".");
+		System.out.println(pseudo+" has connected.");
 		
 		// New player added to the game
 		player = new Player(pseudo, color);
 		server.getWorld().addPlayer(player);
 		
 		// Its client will now receive the players list (pseudo, color and paddle)
-		System.out.println("Fetching players list...");
+		//System.out.println("Fetching players list...");
 		
 		synchronized(server) {
 			out.println(PLAYERS_LIST);
@@ -107,7 +103,7 @@ public class OneClientManager implements Runnable {
 			out.flush();
 		}
 		
-		System.out.println("Players list sent to "+pseudo+".");
+		//System.out.println("Players list sent to "+pseudo+".");
 	}
 
 	// Manager is notified its client wants to play with others
@@ -164,7 +160,6 @@ public class OneClientManager implements Runnable {
 		// Server delete the client and we close the socket dedicated to him
 		server.getWorld().removePlayer(player);
 		server.removeClient(this);
-		//TODO dans le while, mettre le param a false pour terminer le thread
 		socket.close();
 	}
 	

@@ -2,7 +2,6 @@ package client;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
@@ -13,13 +12,17 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import javax.swing.JFrame;
-import javax.swing.JTable;
 
 import model.Player;
 import model.World;
 
 public class ClientArkanoid extends JFrame implements Runnable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1174727504919417320L;
+	
 	private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
@@ -175,8 +178,6 @@ public class ClientArkanoid extends JFrame implements Runnable {
 	private void handleNewPositionBallMessage() throws IOException {
 		int posX = Integer.parseInt(in.readLine());
 		int posY = Integer.parseInt(in.readLine());
-		
-		//System.out.println("[x:"+posX+" ; y:"+posY+"]");
 		
 		// World officialy updates the position
 		world.setLocationBall(posX, posY);

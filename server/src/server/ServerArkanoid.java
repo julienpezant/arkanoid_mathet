@@ -37,6 +37,7 @@ public class ServerArkanoid {
 				System.out.println("Client accepted!");	
 				
 				if(clientsList.size() == 0){
+					System.out.println("First player has connected. World started!");
 					world = new World(this);
 					hasOneClient = true;
 				}
@@ -60,7 +61,6 @@ public class ServerArkanoid {
 			socket.close();
 			System.out.println("Serveur stopped.");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -81,6 +81,7 @@ public class ServerArkanoid {
 		clientsList.remove(client);
 		
 		if(clientsList.size() == 0){
+			System.out.println("Last player has disconnected. World stopped!");
 			world.setRunning(false);
 		}
 	}

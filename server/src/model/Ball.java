@@ -9,7 +9,7 @@ public class Ball {
 	private int speed;
 	private int radius;
 	private double alpha;
-	private ArrayList<String> scorers = new ArrayList();
+	private ArrayList<String> scorers = new ArrayList<String>();
 	
 	public Ball(){
 		this(100,90, new MovementVector(0,-1),1,26);
@@ -21,7 +21,7 @@ public class Ball {
 		this.v = v;
 		this.speed = speed;
 		this.radius = radius;
-		this.alpha = 0;
+		this.setAlpha(0);
 	}
 	
 	public void move(){
@@ -104,6 +104,14 @@ public class Ball {
 	
 	public void setSpeed(int speed) {
 		this.speed = speed;
+	}
+
+	public double getAlpha() {
+		return alpha;
+	}
+
+	public void setAlpha(double alpha) {
+		this.alpha = alpha;
 	}
 	
 	

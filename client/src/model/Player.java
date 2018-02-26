@@ -1,7 +1,5 @@
 package model;
 
-import client.ClientArkanoid;
-
 public class Player {
 
 	private String pseudo;
