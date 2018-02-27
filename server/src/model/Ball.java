@@ -12,7 +12,7 @@ public class Ball {
 	private ArrayList<String> scorers = new ArrayList<String>();
 	
 	public Ball(){
-		this(World.WIDTH/2, World.HEIGHT/2, new MovementVector(0,-1), 1, 26);
+		this(World.WIDTH/2, World.HEIGHT/2, new MovementVector(0,-1), 1, 13);
 	}
 	
 	public Ball(int posX, int posY, MovementVector v, double speed, int radius){
@@ -55,11 +55,13 @@ public class Ball {
 	}
 	
 	public long getXPixel() {
-		return Math.round(posX);
+		/*return Math.round(posX);*/
+		return Math.round(getLimitLeft());
 	}
 	
 	public long getYPixel() {
-		return Math.round(posY);
+		/*return Math.round(posY);*/
+		return Math.round(getLimitTop());
 	}
 	
 	public int getRadius(){
@@ -67,11 +69,11 @@ public class Ball {
 	}
 	
 	public double getLimitLeft() {
-		return posX;
+		return posX - radius;
 	}
 	
 	public double getLimitTop() {
-		return posY;
+		return posY - radius;
 	}
 	
 	public double getLimitBottom() {
