@@ -2,16 +2,11 @@ package model;
 
 public class Paddle{
 	
-	private int width, x, y;
+	private int x, y;
 
-	public Paddle(int width, int x, int y) {
-		this.width = width;
+	public Paddle(int x, int y) {
 		this.x = x;
 		this.y = y;
-	}
-
-	public int getWidth() {
-		return width;
 	}
 
 	public int getX() {

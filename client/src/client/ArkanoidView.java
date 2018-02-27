@@ -9,7 +9,6 @@ import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +20,7 @@ import javax.swing.JPanel;
 import dnr.utils.modeleecoutable.EcouteurModele;
 import model.Ball;
 import model.Player;
+import model.World;
 
 public class ArkanoidView extends JPanel implements MouseMotionListener, EcouteurModele{
 
@@ -32,7 +32,6 @@ public class ArkanoidView extends JPanel implements MouseMotionListener, Ecouteu
 	private ClientArkanoid client;
 	private BufferedImage background;
 	private BufferedImage ballTexture;
-	private String cwd = System.getProperty("user.dir");
 	private HashMap<String, BufferedImage> paddleColors = new HashMap<String, BufferedImage>();
 	public final static String[] COLORS = {"turquoise", "red", "green", "yellow"};
 	
@@ -42,14 +41,13 @@ public class ArkanoidView extends JPanel implements MouseMotionListener, Ecouteu
 		
 		// Paddle images array
 		try {
-			background = ImageIO.read(new File(cwd+"/res/background/background.jpg"));	
-			paddleColors.put("turquoise", ImageIO.read(new File(this.cwd+"/res/paddles/paddle_turquoise.png")));
-			paddleColors.put("red", ImageIO.read(new File(this.cwd+"/res/paddles/paddle_red.png")));
-			paddleColors.put("green", ImageIO.read(new File(this.cwd+"/res/paddles/paddle_green.png")));
-			paddleColors.put("yellow", ImageIO.read(new File(this.cwd+"/res/paddles/paddle_yellow.png")));
-			ballTexture = ImageIO.read(new File(this.cwd+"/res/ball/ball.png"));
+			background = ImageIO.read(this.getClass().getResource("/background/background.jpg"));
+			paddleColors.put("turquoise", ImageIO.read(this.getClass().getResource("/paddles/paddle_turquoise.png")));
+			paddleColors.put("red", ImageIO.read(this.getClass().getResource("/paddles/paddle_red.png")));
+			paddleColors.put("green", ImageIO.read(this.getClass().getResource("/paddles/paddle_green.png")));
+			paddleColors.put("yellow", ImageIO.read(this.getClass().getResource("/paddles/paddle_yellow.png")));
+			ballTexture = ImageIO.read(this.getClass().getResource("/ball/ball.png"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -86,7 +84,8 @@ public class ArkanoidView extends JPanel implements MouseMotionListener, Ecouteu
 	// Client has moved his paddle with his mouse
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		client.movePlayerPaddle(e.getX());
+		if(!(e.getX() + 172 >= World.WIDTH))
+			client.movePlayerPaddle(e.getX());
 	}
 	
 	@Override

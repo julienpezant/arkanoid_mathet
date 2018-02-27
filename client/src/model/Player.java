@@ -11,7 +11,7 @@ public class Player {
 		this.pseudo = pseudo;
 		this.color = color;
 		this.score = score;
-		this.paddle = new Paddle(40, posX, World.HEIGHT - 100);
+		this.paddle = new Paddle(posX, World.HEIGHT - 100);
 	}
 
 	public String getPseudo() {

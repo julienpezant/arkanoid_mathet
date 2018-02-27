@@ -14,7 +14,7 @@ public class World extends AbstractModeleEcoutable{
 	
 	public World(){
 		ballsList = new ArrayList<Ball>();
-		ballsList.add(new Ball(WIDTH/2, HEIGHT/2, 10));
+		ballsList.add(new Ball(WIDTH/2, HEIGHT/2, 26));
 		playersList = new LinkedHashMap<String, Player>();
 	}
 	
