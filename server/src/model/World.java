@@ -37,7 +37,7 @@ public class World implements Runnable {
 			server.broadcastNewBallPositionMessage();
 			
 			try {
-				Thread.sleep(4);
+				Thread.sleep(2);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -79,14 +79,15 @@ public class World implements Runnable {
 			
 			//tests if there's a rebound on the left side
 			if(ball.getLimitLeft() <= 0) {
-				ball.updateMovementVector(ball.getMovX() * -1,ball.getMovY());
+				ball.updateMovementVector(ball.getMovX() * -1, ball.getMovY());
 			}
 			//tests if there's a rebound on the right side
 			if(ball.getLimitRight() >= WIDTH) {
-				ball.updateMovementVector(ball.getMovX() * -1,ball.getMovY());
+				ball.updateMovementVector(ball.getMovX() * -1, ball.getMovY());
 			}
 			//tests if there's a rebound on the top, people may be scoring points
 			if(ball.getLimitTop() <= 0) {
+				ball.setSpeed(ball.getSpeed() + 0.04);
 				//for each player, if their name is in the ball's scorers list, increments their score
 				for(Player player : playersList) {
 					for(String pseudo : ball.getScorers()) {
@@ -185,7 +186,7 @@ public class World implements Runnable {
 				ball.replace(newPosX,  newPosY);
 				//the ball is sent back in a straight line
 				ball.updateMovementVector(0, -1);
-				
+				ball.setSpeed(1);
 			}
 		}
 	}

@@ -6,7 +6,7 @@ public class Ball {
 
 	private double posX, posY;
 	private MovementVector v;
-	private int speed;
+	private double speed;
 	private int radius;
 	private double alpha;
 	private ArrayList<String> scorers = new ArrayList<String>();
@@ -15,15 +15,13 @@ public class Ball {
 		this(World.WIDTH/2, World.HEIGHT/2, new MovementVector(0,-1), 1, 26);
 	}
 	
-	public Ball(int posX, int posY, MovementVector v, int speed, int radius){
+	public Ball(int posX, int posY, MovementVector v, double speed, int radius){
 		this.posX = posX;
 		this.posY = posY;
 		this.v = v;
 		this.speed = speed;
 		this.radius = radius;
 		this.setAlpha(0);
-		
-		System.out.println(this.posX + " et " + this.posY);
 	}
 	
 	public void move(){
@@ -69,11 +67,11 @@ public class Ball {
 	}
 	
 	public double getLimitLeft() {
-		return posX - radius;
+		return posX;
 	}
 	
 	public double getLimitTop() {
-		return posY - radius;
+		return posY;
 	}
 	
 	public double getLimitBottom() {
@@ -100,11 +98,11 @@ public class Ball {
 		this.scorers = new ArrayList<String>();
 	}
 	
-	public int getSpeed() {
+	public double getSpeed() {
 		return this.speed;
 	}
 	
-	public void setSpeed(int speed) {
+	public void setSpeed(double speed) {
 		this.speed = speed;
 	}
 
