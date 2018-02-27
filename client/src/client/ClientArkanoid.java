@@ -72,8 +72,8 @@ public class ClientArkanoid extends JFrame implements Runnable {
 		
 		// JFrame now displayable
 		pack();
-		//setSize(World.WIDTH, World.HEIGHT);
 		setVisible(true);
+		setResizable(false);
 		
 		// WindowListener on the default close operation
 		// Broadcast to the server the disconnection message
